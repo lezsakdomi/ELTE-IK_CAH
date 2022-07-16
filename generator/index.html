@@ -25,6 +25,11 @@
 			<b>2) Choose a colour scheme:</b> <button id="colour-black-on-white">White cards</button>, <button id="colour-white-on-black">Black cards</button>
 		</p>
 		<p>
+			<b>1.c) Or load sets from a different repo/branch:</b><br>
+			<u>https://github.com/<input name="repo">/<input name="owner">/tree/<input name="branch"></u><br>
+			<button onclick="addFromBranch">Add to list</button>
+		</p>
+		<p>
 			<b>3) Hit "Print" in your modern browser and select "Save as PDF"</b><br />
 			If you're printing black cards, make sure you select "background colors and images"
 		</p>
@@ -230,6 +235,23 @@
 		];
 		$('#list').html(generateTable(startingSet))
 		changeColourToBlackOnWhite();
+
+		function addFromBranch() {
+			const owner = $('input[name="owner"]').val();
+			const repo = $('input[name="repo"]').val();
+			const branch = $('input[name="branch"]').val();
+			$.getJSON(`https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`, (data) => {
+				const {sha, tree} = data;
+				for (const {path, type} of tree) {
+					if (type == 'blob' && path.match(/^cards\/.*\/\.txt$/)) {
+						const el = document.createElement('option');
+						el.value = `https://raw.githubusercontent.com/${owner}/${repo}/${sha}/${path}`;
+						el.innerText = path.replace(/^cards\//, '').replace(/\//g, ' - ').replace(/\.txt$/, '');
+						$('#card-set-selector').append(el);
+					}
+				}
+			});
+		}
 	</script>
 
 </body>
