@@ -28,6 +28,10 @@
 			<b>1.c) Or load sets from a different repo/branch:</b><br>
 			<u>https://github.com/<input name="owner">/<input name="repo">/tree/<input name="branch"></u>
 			<button onclick="addFromBranch()">Add to list</button>
+			<p id="listUpdMsg" style="display: none;">
+				Now go to step 1.a) or
+				<a href="?"><button>reset to default</button></a>
+			</p>
 		</p>
 		<p>
 			<b>3) Hit "Print" in your modern browser and select "Save as PDF"</b><br />
@@ -285,8 +289,21 @@
 						$('#card-set-selector').append(el);
 					}
 				}
+				$('#listUpdMsg').show();
 			});
 		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const params = new URLSearchParams(location.search);
+
+			const fields = ["owner", "repo", "branch"];
+			for (const field of fields) {
+				$(`input[name="${field}"]`).on('input', (evt) => {
+					params.set(field, evt.target.value);
+					history.replaceState({}, document.title, `?${params}`);
+				});
+			}
+		})
 	</script>
 
 </body>
