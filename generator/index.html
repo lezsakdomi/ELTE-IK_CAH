@@ -27,7 +27,7 @@
 		<p>
 			<b>1.c) Or load sets from a different repo/branch:</b><br>
 			<u>https://github.com/<input name="owner">/<input name="repo">/tree/<input name="branch"></u><br>
-			<button onclick="addFromBranch">Add to list</button>
+			<button onclick="addFromBranch()">Add to list</button>
 		</p>
 		<p>
 			<b>3) Hit "Print" in your modern browser and select "Save as PDF"</b><br />
@@ -243,10 +243,11 @@
 			$.getJSON(`https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`, (data) => {
 				const {sha, tree} = data;
 				for (const {path, type} of tree) {
-					if (type == 'blob' && path.match(/^cards\/.*\/\.txt$/)) {
+					if (type == 'blob' && path.match(/^cards\/.*\.txt$/)) {
 						const el = document.createElement('option');
 						el.value = `https://raw.githubusercontent.com/${owner}/${repo}/${sha}/${path}`;
-						el.innerText = path.replace(/^cards\//, '').replace(/\//g, ' - ').replace(/\.txt$/, '');
+						el.innerText = `${owner}/${repo} - ${branch} - `
+							+ path.replace(/^cards\//, '').replace(/\//g, ' - ').replace(/\.txt$/, '');
 						$('#card-set-selector').append(el);
 					}
 				}
