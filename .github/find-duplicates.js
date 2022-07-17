@@ -29,7 +29,8 @@ class Term {
 	static hash(text) {
 		return text
 			.normalize('NFD')
-			.replace(/\W/g, '');
+			.replace(/\W/g, '')
+			.toLowerCase();
 	}
 
 	static instances = {}
