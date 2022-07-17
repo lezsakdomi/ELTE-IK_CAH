@@ -102,22 +102,26 @@ async function main() {
 			console.log();
 		}
 	}
-	console.log(`${numDuplicates} duplicates found. Statistics:`);
-	for (const deck of Deck.instances) {
-		let color = "";
-		if (deck.numDuplicates === 0) {
-			color = colors.green;
-		} if (deck.numDuplicates > 5) {
-			color = colors.yellow;
-		} if (deck.numDuplicates > 50) {
-			color = colors.red;
+	if (numDuplicates === 0) {
+		console.log(`${colors.white}${colors.green}No duplicates found${colors.reset} 🎉`)
+		return 0;
+	} else {
+		console.log(`${numDuplicates} duplicates found. Statistics:`);
+		for (const deck of Deck.instances) {
+			let color = "";
+			if (deck.numDuplicates === 0) {
+				color = colors.green;
+			} if (deck.numDuplicates > 5) {
+				color = colors.yellow;
+			} if (deck.numDuplicates > 50) {
+				color = colors.red;
+			}
+
+			console.log(`${color}${(deck.numDuplicates / deck.cards.size * 100).toFixed(2).padStart(6)}% ${deck.path}${colors.reset} (${deck.numDuplicates})`);
 		}
-
-		console.log(`${color}${(deck.numDuplicates / deck.cards.size * 100).toFixed(2).padStart(6)}% ${deck.path}${colors.reset} (${deck.numDuplicates})`);
+		console.log(`Total ratio: ${colors.white}${(numDuplicates / [...Object.values(Term.instances)].length * 100).toFixed(2)}%${colors.reset}`)
+		return 1;
 	}
-	console.log(`Total ratio: ${colors.white}${(numDuplicates / [...Object.values(Term.instances)].length * 100).toFixed(2)}%${colors.reset}`)
-
-	return numDuplicates === 0 ? 0 : 1;
 }
 
 const colors = {
