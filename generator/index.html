@@ -53,7 +53,7 @@
 			let owner, repo, branch;
 
 			try {
-				[, owner] = location.host.match(/^(^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$).github.io$/i);
+				[, owner] = location.host.match(/^([a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}).github.io$/i);
 			} catch (e) {
 				console.warn(e);
 			}
