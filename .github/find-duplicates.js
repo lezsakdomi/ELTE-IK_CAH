@@ -117,7 +117,7 @@ async function main() {
 	}
 	console.log(`Total ratio: ${colors.white}${(numDuplicates / [...Object.values(Term.instances)].length * 100).toFixed(2)}%${colors.reset}`)
 
-	return 0;
+	return numDuplicates === 0 ? 0 : 1;
 }
 
 const colors = {
