@@ -34,6 +34,10 @@
 			</p>
 		</p>
 		<p>
+			<b>Optional: Add watermark</b><br/>
+			<input type="text" name="watermark" value="CAH 🂠"><button onclick="addWatermark()">Add</button>
+		</p>
+		<p>
 			<b>3) Hit "Print" in your modern browser and select "Save as PDF"</b><br />
 			If you're printing black cards, make sure you select "background colors and images"
 		</p>
@@ -304,6 +308,20 @@
 				});
 			}
 		})
+
+		const watermarkStyleSheet = document.createElement("style");
+		document.head.appendChild(watermarkStyleSheet);
+		function addWatermark() {
+			const watermark = document.querySelector('input[name="watermark"]').value;
+			watermarkStyleSheet.innerHTML = `
+				td.textfill::before {
+					content: '${watermark}';
+					position: absolute;
+					margin-top: 6.3cm;
+					font-weight: normal;
+				}
+			`;
+		}
 	</script>
 
 </body>
