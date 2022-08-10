@@ -34,6 +34,16 @@
 			</p>
 		</p>
 		<p>
+			<b>1.c.I) Or load new cards since a specific commit/tag/etc:</b><br>
+			<input name="diff-since">
+			<button onclick="addFromBranchDiff()">Add to list</button>
+			<button onclick="addFromBranchDiffEach()">Add to list each deck separately</button>
+			<p id="listUpdMsgDiff" style="display: none;">
+				Now go to step 1.a) or
+				<a href="?"><button>reset to default</button></a>
+			</p>
+		</p>
+		<p>
 			<b>Optional: Add watermark</b><br/>
 			<input type="text" name="watermark" value="CAH 🂠"><button onclick="addWatermark()">Add</button>
 		</p>
@@ -294,6 +304,61 @@
 					}
 				}
 				$('#listUpdMsg').show();
+			});
+		}
+
+		function diffToDataUrl(diff) {
+			const lines = diff
+				.split(/\r?\n/g)
+				.filter((l, i, a) => l.match(/^\+/) && (!a[i+1] || !a[i+1].match(/^@/)))
+				.map(l => l.slice(1))
+				.join('\n');
+			return URL.createObjectURL(new Blob([lines], {
+				type: 'text/plain;charset=UTF-8',
+			}));
+		}
+
+		function addFromBranchDiff() {
+			const owner = $('input[name="owner"]').val();
+			const repo = $('input[name="repo"]').val();
+			const to = $('input[name="branch"]').val();
+			const from = $('input[name="diff-since"]').val();
+			fetch(`https://api.github.com/repos/${owner}/${repo}/compare/${from}...${to}`, {
+				headers: {
+					'Accept': 'application/vnd.github.v3.diff',
+				}
+			}).then(res => res.text()).then(diff => {
+				const el = document.createElement('option');
+				el.value = diffToDataUrl(diff);
+				el.innerText = `${owner}/${repo} - ${to} - New cards`;
+				$('#card-set-selector').append(el);
+
+				$('#listUpdMsgDiff').show();
+			});
+		}
+
+		function addFromBranchDiffEach() {
+			const owner = $('input[name="owner"]').val();
+			const repo = $('input[name="repo"]').val();
+			const to = $('input[name="branch"]').val();
+			const from = $('input[name="diff-since"]').val();
+			fetch(`https://api.github.com/repos/${owner}/${repo}/compare/${from}...${to}`, {
+				headers: {
+					'Accept': 'application/vnd.github+json',
+				}
+			}).then(res => res.json()).then(data => {
+				const {files} = data;
+				for (const {filename, patch} of files) {
+					if (filename.match(/^cards\/.*\.txt$/)) {
+						const el = document.createElement('option');
+						el.value = diffToDataUrl(patch);
+						el.innerText = `${owner}/${repo} - ${to} - `
+							+ filename.replace(/^cards\//, '').replace(/\//g, ' - ').replace(/\.txt$/, '')
+							+ ` - New cards`;
+						$('#card-set-selector').append(el);
+					}
+				}
+				$('#listUpdMsgDiff').show();
 			});
 		}
 
