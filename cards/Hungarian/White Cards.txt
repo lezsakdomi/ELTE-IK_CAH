@@ -234,7 +234,6 @@ Egy kis kikapcsolódás.
 
 
 
-Szembefordítható hüvelykujjak.
 Szellemek.
 Alkoholizmus.
 Rosszul időzített holokausztviccek.
@@ -500,3 +499,4 @@ Semjén János.
 Balrog Zoltán.
 Felcsút.
 Lézer János.
+Trópusi szarszag
