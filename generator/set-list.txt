@@ -1,8 +1,8 @@
+../cards/Hungarian/Xmas 2014/White Cards.txt
+../cards/Hungarian/Xmas 2014/Black Cards.txt
 ../cards/Hungarian/White Cards.txt
 ../cards/Hungarian/CAH_MagyarByAnonymous.pdf/White Cards.txt
 ../cards/Hungarian/CAH_MagyarByAnonymous.pdf/Black Cards.txt
-../cards/Hungarian/Xmas 2014/White Cards.txt
-../cards/Hungarian/Xmas 2014/Black Cards.txt
+../cards/Hungarian/Black Cards.txt
 ../cards/Hungarian/Rajongói/White Cards.txt
 ../cards/Hungarian/Rajongói/Black Cards.txt
-../cards/Hungarian/Black Cards.txt
